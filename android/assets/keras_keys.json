@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "renaissance-226221",
+  "private_key_id": "e4815a88dfda2e2ab5c8e56046e2bbd6ee38e1be",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoWVnP/lTesdaS\nvaSIZYGSII5E+5KRCuzeDdCFzWGst34JvjYISQgSfJNP4F3S5eABGG5mou8plImL\nQ8MEKPN7rVdHQBAATDuCv7pez3oStmJlqzvi3Zbycbnekq4pDGsns3nQ55D5kHXw\nuGaxdAMSBPzZ5vY34BcVfH/i2YCCLN0Xdc0xt7BUIrKqlnPEK64OffyiCSQCatDy\nEDsEQJ6KxGXpPymcFF662xh3ckdwoeBwPlxUfagO/U8mBp0GSu3uXuEG1bhHmF4a\nXmifHQa/jXcDnqFbUHDl4+gL2vnWAGnrLJmyA8y52kkqDrbkU+Que/2c4eggX9fw\nLYAr06wFAgMBAAECggEADaWEjsQ2nAC9fJKr4jScPryt27Cq7l/82Hk1NIt0Bfyv\n1llZZu2InnsDs/9ji6N/t4cD+ATwLyYvyh65kb5CEn34K7npMiT70/r3wBTAeADZ\n1BT/20GMKWYHo5+vR3uOuh6l2sXSrjBEJznDdVIKp6zI1F8RCXF8XY0Ejt6DuMmJ\nXlv8HI+ECcm4jOcwvo9usvqPFtkXkew4BQVHJkYZlqvvA6zH3B/e80V9Vzm/ZXRk\niUMj+kzFoGrtRbD8p9BaDK5+u4pwApKx4Z/8sX8HHnOcxHMsAe83rzku7tvaIA+v\n6hSjJIrU2v2f6YA5UaJ3WBrsMfC5757qKa3PYiLxJwKBgQDnNJeldOSE/F4GHHAS\n/UfOW5fy1bmMvLrVd9/dSFDDv22fDoCFyD9QvGT9uTIq8rPndNSKu4V15msIZWA8\n/gf6hgKOjsq5i35hOh7zVjHN4xahQore68tAz38TEGSLPe2HgcTPn/sqm0cLp094\nGwgR4INHvtwxrhDqZy+mMVc2zwKBgQC6ZyCh3lVq1x4F15PCGuXWSEUJwR9bwk/4\nVWIEE9H8DiB1rRihOtj6eIyUMPVROWRY8QUwrQD4QE0we99v99Q4iDX+Fu96JPMB\ndmikzJtL31gnEaBydk3QVx32sBtI5BNeEu3cwkJkTXBt0DoodTfTDE1c2JrceXKG\neuXZyczk6wKBgQCUaeEyd5+9chaVC6oxtl5iq88VNXafTgMMxp9wd1xI21ft8ywz\nNIDYPacCa+A1S4iKeid5Srh4H0nzoMevP0411dJMWoLtqgqdNObrQxhDVpOPPpzQ\nTkIxv0COJ0azTzRreLSyprpe9kAbzfGoYonCmAENjAni5h67qTMgFqoqZwKBgHGM\nNLKl7z6AAAfrBFUvcWaQ640/mUyaF4Dc8jItqLJ0II3OfbxpTpd1K51yHV33KguL\n9m9qU7bl5J9uNfPM8ffl8Y3whrzPGUCA0sng4ZDcYqSZ9jUDn+8TwmrtaBGE7c9W\nlJLvuuXCzoP2XhcbIIBtdArk36ECUiNdZfq/FRM1AoGAKrGFbNh3+iV7a45vomko\n+qtKty5Y69oXv6BN3PHyGHXdOx47HrnfOaWjTviimpX8vSREDJeaU7y0wFYykYm4\nATZCrv4t+TkjhSh6WttcEtEtiJG/gHQZmqX330MH5d3MfXx/+0ERs060wcP8vL8Q\npF7DHlklgtxAVUufQj3lN80=\n-----END PRIVATE KEY-----\n",
+  "client_email": "rmoa-650@renaissance-226221.iam.gserviceaccount.com",
+  "client_id": "117322775424185559908",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rmoa-650%40renaissance-226221.iam.gserviceaccount.com"
+}
