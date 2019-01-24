@@ -42,11 +42,11 @@ project(":desktop") {
 
 
     dependencies {
-        implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -56,14 +56,14 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
@@ -77,10 +77,10 @@ project(":core") {
 
 
     dependencies {
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation 'com.google.api-client:google-api-client:1.25.0'
-        implementation 'com.google.apis:google-api-services-discovery:v1-rev78-1.25.0'
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile 'com.google.api-client:google-api-client:1.25.0'
+        compile 'com.google.apis:google-api-services-discovery:v1-rev78-1.25.0'
     }
 }
 
