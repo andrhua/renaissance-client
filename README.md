@@ -5,4 +5,4 @@ System requirements:
   
   OpenGLES 3+ support
   
-  [APK](../blob/master/android-debug.apk)
+  [APK](../master/android-debug.apk)
