@@ -62,7 +62,7 @@ public class InferenceHelper implements IUpdate, IReset {
     }
 
     void makeInferenceImage(float[] pixels){
-        input.put("input",  Collections.singletonList(pixels));
+        input.put("in",  Collections.singletonList(pixels));
         makeRequest();
     }
 
@@ -90,10 +90,11 @@ public class InferenceHelper implements IUpdate, IReset {
             if (f.isDone()){
                 try {
                     String response = f.get().parseAsString();
+                    Gdx.app.log("", response);
                     float[] scores = json
                             .fromJson(InferenceHelper.Wrap.class, response)
                             .predictions[0]
-                            .output;
+                            .out;
                     support.firePropertyChange("scores", null, scores);
                 } catch (IOException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -126,6 +127,6 @@ public class InferenceHelper implements IUpdate, IReset {
     }
 
     public static class Prediction{
-        float[] output;
+        float[] out;
     }
 }

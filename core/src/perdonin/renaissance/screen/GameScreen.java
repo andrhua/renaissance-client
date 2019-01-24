@@ -266,7 +266,7 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
             } else {
                 if (sorted.get(0).getKey() == objective || scores[objective] > Const.WIN_PROB) {
                     response.append("Oh, I see ").append(Const.categories.get(objective)).append("!");
-                    drawTable.setTouchable(Touchable.disabled);
+//                    drawTable.setTouchable(Touchable.disabled);
                     alreadyProcessed = true;
                     timer.cancel();
                     Timer.schedule(new Timer.Task() {
