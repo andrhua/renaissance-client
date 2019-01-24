@@ -1,11 +1,9 @@
-# renaissance-client
-
 ## Desktop
 System requirements:
 
 [JRE 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
-### Download
+#### Download
 [.jar](../master/desktop-1.0.jar)
 
 For launch type in terminal:
@@ -19,5 +17,5 @@ Android 4.4+
   
 OpenGLES 3+ support
 
-### Download 
+#### Download 
 [.apk](../master/android-debug.apk)
