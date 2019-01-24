@@ -1,4 +1,4 @@
-package perdonin.renaissance;
+package perdonin.renaissance.core;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

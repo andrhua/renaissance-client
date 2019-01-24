@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
 
-import perdonin.renaissance.Const;
+import perdonin.renaissance.core.Const;
 
 public class GameSession {
     public enum Result {SUCCESS, TIME_UP, USER_GAVE_UP}

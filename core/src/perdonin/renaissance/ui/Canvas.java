@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import perdonin.renaissance.Const;
+import perdonin.renaissance.core.Const;
 import perdonin.renaissance.i.IReset;
 
 
@@ -36,7 +36,6 @@ public class Canvas extends Widget implements IReset {
         this.reset();
         textureRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Const.CANVAS_SIZE, Const.CANVAS_SIZE);
         textureRegion.flip(false, true);
-        raw = ScreenUtils.getFrameBufferPixmap(0, 0, Const.CANVAS_SIZE, Const.CANVAS_SIZE);
     }
 
     public void addInk(Vector2 v){
@@ -53,19 +52,21 @@ public class Canvas extends Widget implements IReset {
         return new TextureRegionDrawable(tr);
     }
 
-    public float[] getScaledDrawing(){
+    private void updateRawPixmap(){
         if (raw != null) raw.dispose();
-        float ax = Math.max(bottomLeft.x - Const.DOT_RADIUS, 0),
-                ay = Math.max(bottomLeft.y - Const.DOT_RADIUS, 0),
-                bx = Math.min(topRight.x + Const.DOT_RADIUS, Const.CANVAS_SIZE),
-                by = Math.min(topRight.y + Const.DOT_RADIUS, Const.CANVAS_SIZE);
-
         Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, buffer.getFramebufferHandle());
         Gdx.gl30.glReadBuffer(GL30.GL_COLOR_ATTACHMENT0);
         raw = ScreenUtils.getFrameBufferPixmap(0, 0, Const.CANVAS_SIZE, Const.CANVAS_SIZE);
         Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, 0);
         Gdx.gl30.glReadBuffer(GL30.GL_BACK);
+    }
 
+    public float[] getScaledDrawing(){
+        float ax = Math.max(bottomLeft.x - Const.DOT_RADIUS, 0),
+                ay = Math.max(bottomLeft.y - Const.DOT_RADIUS, 0),
+                bx = Math.min(topRight.x + Const.DOT_RADIUS, Const.CANVAS_SIZE),
+                by = Math.min(topRight.y + Const.DOT_RADIUS, Const.CANVAS_SIZE);
+        updateRawPixmap();
         Pixmap scaled = new Pixmap(28, 28, Pixmap.Format.RGBA8888);
         scaled.setFilter(Pixmap.Filter.BiLinear);
         scaled.drawPixmap(raw,
@@ -120,6 +121,7 @@ public class Canvas extends Widget implements IReset {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         buffer.end();
+        updateRawPixmap();
     }
 
     @Override

@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import perdonin.renaissance.Const;
+import perdonin.renaissance.core.Const;
+import perdonin.renaissance.core.I18n;
 import perdonin.renaissance.game.GameSession;
 import perdonin.renaissance.MyGame;
-import perdonin.renaissance.ui.Colors;
 import perdonin.renaissance.ui.UIBuilder;
 import perdonin.renaissance.i.IUpdate;
 
@@ -28,6 +28,7 @@ public class ScreenManager implements IUpdate {
     public Viewport viewport;
     public Stage stage;
     public UIBuilder uiBuilder;
+    public I18n i18n;
 
     public ScreenManager(MyGame game){
         this.game = game;
@@ -60,6 +61,7 @@ public class ScreenManager implements IUpdate {
 
     void postLoad(){
         uiBuilder = new UIBuilder(game.assets);
+        i18n = new I18n(game.assets);
         menu = new MenuScreen(this);
         _game = new GameScreen(this, new GameSession());
     }

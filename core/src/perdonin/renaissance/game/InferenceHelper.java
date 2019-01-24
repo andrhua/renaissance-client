@@ -39,7 +39,7 @@ public class InferenceHelper implements IUpdate, IReset {
     private final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
     private RestMethod method;
     private GenericUrl url;
-    private final GoogleCredential credential = GoogleCredential.fromStream(Gdx.files.internal("keras_keys.json").read())
+    private final GoogleCredential credential = GoogleCredential.fromStream(Gdx.files.internal("inferrence/keras_keys.json").read())
             .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
     private final HttpRequestFactory requestFactory = httpTransport.createRequestFactory(credential);
     private Array<Future<HttpResponse>> futures = new Array<>();
@@ -90,7 +90,6 @@ public class InferenceHelper implements IUpdate, IReset {
             if (f.isDone()){
                 try {
                     String response = f.get().parseAsString();
-                    Gdx.app.log("", response);
                     float[] scores = json
                             .fromJson(InferenceHelper.Wrap.class, response)
                             .predictions[0]

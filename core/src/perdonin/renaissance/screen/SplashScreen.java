@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
-import perdonin.renaissance.Assets;
-import perdonin.renaissance.Const;
+import perdonin.renaissance.core.Assets;
+import perdonin.renaissance.core.Const;
 import perdonin.renaissance.ui.Colors;
 
 public class SplashScreen extends BaseScreen {
@@ -24,7 +24,7 @@ public class SplashScreen extends BaseScreen {
     }
 
     private void initAssets(){
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("classy.otf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/classy.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.minFilter= Texture.TextureFilter.Linear;
         parameter.magFilter= Texture.TextureFilter.Linear;

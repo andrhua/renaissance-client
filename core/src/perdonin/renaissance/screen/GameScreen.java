@@ -17,12 +17,11 @@ import com.badlogic.gdx.utils.Timer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import perdonin.renaissance.Const;
-import perdonin.renaissance.Utils;
+import perdonin.renaissance.core.Const;
+import perdonin.renaissance.core.Utils;
 import perdonin.renaissance.game.GameSession;
 import perdonin.renaissance.game.InferenceHelper;
 import perdonin.renaissance.game.InkListener;
@@ -33,12 +32,10 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
     private GameSession session;
     private Table drawTable, taskTable, endTable;
     private enum State{TASK, DRAW, END}
-    private State state;
-    private Label timerLabel, roundLabel, summaryLabel;
-    private int time, objective, round = 0;
+    private int time, objective, round;
     private Timer.Task timer;
     private Canvas canvas;
-    private Label target, objectiveLabel, predictionLabel;
+    private Label target, objectiveLabel, predictionLabel, timerLabel, roundLabel, summaryLabel;
     private InferenceHelper helper;
     private InkListener inkListener;
     private Array<TextButton> drawings;
@@ -62,19 +59,19 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
 
     @Override
     protected void initUI() {
-        TextureAtlas icons = assets.get("icons.atlas", TextureAtlas.class);
+        TextureAtlas icons = assets.get("gfx/icons.atlas", TextureAtlas.class);
         taskTable = new Table();
         taskTable.setFillParent(true);
         taskTable.setSize(Const.WIDTH, Const.HEIGHT);
         Label.LabelStyle taskLS = new Label.LabelStyle(assets.get("task.ttf"), Color.BLACK);
         Label.LabelStyle targetLS = new Label.LabelStyle(assets.get("regular.ttf"), Color.WHITE);
-        Label draw = new Label("draw", taskLS);
+        Label draw = new Label(i18n.get("draw"), taskLS);
         target = new Label("banana", targetLS);
-        Label timeBounds = new Label("in under " + Const.ROUND_TIME + " seconds", taskLS);
+        Label timeBounds = new Label(i18n.format("timeLimit", Const.ROUND_TIME), taskLS);
         TextButton.TextButtonStyle tbs = new TextButton.TextButtonStyle();
         tbs.font = assets.get("timer.ttf");
         tbs.fontColor = Color.WHITE;
-        TextButton startButton = uiBuilder.getTextButton("Got it!", tbs, ()-> setState(State.DRAW), Color.WHITE);
+        TextButton startButton = uiBuilder.getTextButton(i18n.get("confirmation"), tbs, ()-> setState(State.DRAW), Color.WHITE);
         startButton.addAction(Actions.forever(
                 Actions.sequence(
                         Actions.alpha(1, 1),
@@ -89,23 +86,23 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
 
         Label.LabelStyle statusbarLS = new Label.LabelStyle(assets.get("timer.ttf"), Color.WHITE);
         Label.LabelStyle classyLS = new Label.LabelStyle(assets.get("task.ttf"), Color.WHITE);
-        objectiveLabel = new Label("1+\n2", classyLS);
+        objectiveLabel = new Label("", classyLS);
         objectiveLabel.setWrap(true);
         objectiveLabel.setAlignment(Align.center);
-        roundLabel = new Label("1 / 5", classyLS);
+        roundLabel = new Label("", classyLS);
         roundLabel.setAlignment(Align.left);
-        timerLabel = new Label("00:70", statusbarLS);
+        timerLabel = new Label("", statusbarLS);
         timerLabel.setColor(1, 1, 1, .45f);
         timerLabel.setAlignment(Align.right);
         ImageButton eraser = uiBuilder.getImageButton(icons.findRegion("eraser"), ()-> {
             canvas.reset();
             inkListener.reset();
-            predictionLabel.setText("...");
+            predictionLabel.setText(i18n.get("emptyCanvasGuess"));
         }, Color.WHITE);
         ImageButton skip = uiBuilder.getImageButton(icons.findRegion("skip"), () -> nextRound(session.setResult(GameSession.Result.USER_GAVE_UP)), Color.WHITE);
         ImageButton exit = uiBuilder.getImageButton(icons.findRegion("exit"), () -> sm.setScreen(ScreenManager.ScreenType.MENU), Color.RED);
         canvas = new Canvas();
-        predictionLabel = new Label("...", statusbarLS);
+        predictionLabel = new Label("", statusbarLS);
         predictionLabel.setColor(1, 1, 1, .6f);
         drawTable = new Table();
         drawTable.setFillParent(true);
@@ -125,14 +122,10 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
 
         endTable = new Table();
         endTable.setFillParent(true);
-        //endTable.setBackground(npd);
-        endTable.setDebug(true);
         endTable.setSize(Const.WIDTH, Const.HEIGHT);
-        Label resultLabel = new Label("You suck!", targetLS);
         summaryLabel = new Label("", classyLS);
-        summaryLabel.setWrap(true);
-        endTable.add(resultLabel).align(Align.center).expandX().colspan(2).padBottom(Const.height(.1f)).row();
-        endTable.center().add(summaryLabel).align(Align.center).colspan(2).padBottom(Const.height(.05f)).row();
+        summaryLabel.setAlignment(Align.center);
+        endTable.add(summaryLabel).align(Align.center).width(Const.WIDTH).colspan(2).padTop(Const.height(.05f)).padBottom(Const.height(.05f)).row();
         endTable.defaults().center().padBottom(Const.height(.05f));
         TextButton.TextButtonStyle captionStyle = new TextButton.TextButtonStyle();
         captionStyle.font = assets.get("caption.ttf");
@@ -163,6 +156,7 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
         stage.addActor(endTable);
         drawTable.setVisible(false);
         endTable.setVisible(false);
+        round = 0;
         nextRound(session.init());
     }
 
@@ -197,10 +191,10 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
                 drawTable.setVisible(true);
                 drawTable.setTouchable(Touchable.enabled);
                 canvas.reset();
-                roundLabel.setText(round + "/" + Const.ROUNDS);
-                timerLabel.setText("00:".concat(String.valueOf(Const.ROUND_TIME)));
-                objectiveLabel.setText("Draw:\n" + Const.categories.get(objective));
-                predictionLabel.setText("...");
+                roundLabel.setText(i18n.format("rounds", round, Const.ROUNDS));
+                timerLabel.setText(i18n.format("time", Const.ROUND_TIME));
+                objectiveLabel.setText(i18n.format("objective", Const.categories.get(objective)));
+                predictionLabel.setText(i18n.get("emptyCanvasGuess"));
                 taskTable.addAction(Actions.sequence(
                         Actions.parallel(
                                 Actions.moveBy(0, -Const.HEIGHT, .5f, Interpolation.exp5In),
@@ -212,9 +206,9 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
                     @Override
                     public void run() {
                         time--;
-                        timerLabel.setText("00:".concat((time + 1 < 10 ? "0" : "").concat(String.valueOf(time + 1))));
-                        if (time < 0){
-                            //nextRound(session.setResult(GameSession.Result.TIME_UP));
+                        timerLabel.setText(i18n.format("time",  time));
+                        if (time == 0){
+                            nextRound(session.setResult(GameSession.Result.TIME_UP));
                         }
                     }
                 };
@@ -222,17 +216,16 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
                 break;
             case END:
                 if (timer != null) timer.cancel();
-                summaryLabel.setText("Neural net recognized " + session.getRecognized() + " your drawings");
-                summaryLabel.invalidate();
+                summaryLabel.setText(i18n.format("summary", session.getRecognized()));
                 endTable.setVisible(true);
                 endTable.addAction(Actions.sequence(
                         Actions.alpha(0),
                         Actions.fadeIn(.65f, Interpolation.exp10In),
                         Actions.run(()-> drawTable.setVisible(false))
                 ));
+                summaryLabel.setWrap(true);
                 break;
         }
-        this.state = state;
     }
 
     private void nextRound(int objective){
@@ -262,11 +255,11 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
             response.setLength(0);
             List<Map.Entry<Integer, Float>> sorted = Utils.sort(scores);
             if (sorted.get(0).getValue() < Const.RECOGNIZABLE){
-                response.append("This is a mess!");
+                response.append(i18n.random("mess"));
             } else {
                 if (sorted.get(0).getKey() == objective || scores[objective] > Const.WIN_PROB) {
-                    response.append("Oh, I see ").append(Const.categories.get(objective)).append("!");
-//                    drawTable.setTouchable(Touchable.disabled);
+                    response.append(i18n.format("success", Const.categories.get(objective)));
+                    drawTable.setTouchable(Touchable.disabled);
                     alreadyProcessed = true;
                     timer.cancel();
                     Timer.schedule(new Timer.Task() {
@@ -277,7 +270,7 @@ public class GameScreen extends BaseScreen implements PropertyChangeListener {
                     }, 1.75f);
 
                 } else {
-                    response.append("I see");
+                    response.append(i18n.get("guesses"));
                     for (int i = 0; i < 4; i++){
                         Map.Entry<Integer, Float> entry = sorted.get(i);
                         if (entry.getValue() >= Const.RECOGNIZABLE){
