@@ -1,65 +1,113 @@
 package perdonin.renaissance.game;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import perdonin.renaissance.core.Const;
+import perdonin.renaissance.inferrence.PredictionResponse;
+import perdonin.renaissance.screen.GameScreen;
 
 import java.util.Iterator;
 
-import perdonin.renaissance.core.Const;
-
 public class GameSession {
-    public enum Result {SUCCESS, TIME_UP, USER_GAVE_UP}
-    private Array<Integer> indices = new Array<>(Const.categories.size);
-    private Iterator<Integer> iterator;
-    private int i = 0, recognized, round;
-    private boolean[] guesses = new boolean[6];
+    private final GameScreen gameScreen;
+    private Array<Integer> categories = new Array<>(Const.categories.size);
+    private Iterator<Integer> sessionObjectives;
+    private int latestObjectiveIndex = 0;
+    private int round = 0;
+    private boolean[] predictions = new boolean[6];
+    private Timer.Task timer;
+    private int time;
+    private int objective;
 
-    public GameSession(){
+    public GameSession(GameScreen gameScreen){
+        this.gameScreen = gameScreen;
         for (int i = 0; i < Const.categories.size; i++){
-            indices.add(i);
+            categories.add(i);
         }
-        indices.shuffle();
+        categories.shuffle();
     }
 
-    public int init(){
-        recognized = 0;
-        round = 0;
-        if (i + Const.ROUNDS >= indices.size){
-            indices.shuffle();
-            i = 0;
+    public void init(){
+        if (latestObjectiveIndex + Const.ROUNDS >= categories.size){
+            categories.shuffle();
+            latestObjectiveIndex = 0;
         }
-        Array<Integer> set = new Array<>();
-        set.addAll(indices, i, Const.ROUNDS);
-        i += Const.ROUNDS;
-        iterator = set.iterator();
-        return nextObjective();
+        Array<Integer> array = new Array<>();
+        array.addAll(categories, latestObjectiveIndex, Const.ROUNDS);
+        latestObjectiveIndex += Const.ROUNDS;
+        sessionObjectives = array.iterator();
+        resetTimer();
+        startNextRound(false);
     }
 
-    public int setResult(Result result){
-        switch (result){
-            case SUCCESS:
-                recognized++;
-                guesses[round++] = true;
-                break;
-            case TIME_UP:
-            case USER_GAVE_UP:
-                guesses[round++] = false;
-                break;
-        }
-        return nextObjective();
+    public void startTimer() {
+        Timer.schedule(timer, 0, 1, Const.ROUND_TIME);
     }
 
-    private int nextObjective(){
-        if (iterator.hasNext())
-            return iterator.next();
-        else
-            return -1;
+    public boolean isSuccessfulRecognition(PredictionResponse response) {
+        if (response.getTop(0).getValue() < Const.RECOGNIZABLE){
+            gameScreen.updateDrawingPrediction(null);
+            return false;
+        } else {
+            int position = response.getObjectivePosition(objective);
+            if (position <= Const.POSITION_TO_WIN) {
+                resetTimer();
+                gameScreen.updateDrawingPrediction(Array.with(response.getTop(position)));
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        startNextRound(true);
+                    }
+                }, 1.75f);
+                return true;
+            } else {
+                gameScreen.updateDrawingPrediction(response.getSortedScores());
+                return false;
+            }
+        }
+    }
+
+    private void startNextRound(boolean isSuccessful) {
+        if (round > 0) predictions[round - 1] = isSuccessful;
+        objective = sessionObjectives.hasNext()
+                ? sessionObjectives.next()
+                : -1;
+        gameScreen.onRoundStart(objective, round++);
+    }
+
+    private void resetTimer() {
+        if (timer != null) timer.cancel();
+        time = Const.ROUND_TIME;
+        timer = new Timer.Task(){
+            @Override
+            public void run() {
+                time--;
+                gameScreen.updateTimer(time);
+                if (time == 0) {
+                    startNextRound(false);
+                }
+            }
+        };
+    }
+
+    public void skipRound() {
+        resetTimer();
+        startNextRound(false);
     }
 
     public int getRecognized() {
+        int recognized = 0;
+        for (boolean prediction: predictions)
+            if (prediction) recognized += 1;
         return recognized;
     }
 
     public boolean getGuess(int i){
-        return this.guesses[i];
+        return this.predictions[i];
     }
+
+    public int getObjective() {
+        return objective;
+    }
+
 }

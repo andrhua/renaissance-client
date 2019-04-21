@@ -5,19 +5,19 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
-
 import perdonin.renaissance.core.Const;
 import perdonin.renaissance.i.IReset;
+import perdonin.renaissance.inferrence.InferenceHelper;
 import perdonin.renaissance.ui.Canvas;
 
-public class InkListener extends InputListener implements IReset {
+public class DrawingListener extends InputListener implements IReset {
 
     private Array<float[]> strokes = new Array<>();
     private Vector3 prevPoint;
     private Canvas canvas;
     private InferenceHelper helper;
 
-    public InkListener(Canvas canvas, InferenceHelper helper){
+    public DrawingListener(Canvas canvas, InferenceHelper helper){
         this.canvas = canvas;
         this.helper = helper;
     }
@@ -49,7 +49,7 @@ public class InkListener extends InputListener implements IReset {
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         ink(x, y, true);
-        helper.makeInferenceImage(canvas.getScaledDrawing());
+        helper.requestPrediction(canvas.getScaledDrawing());
     }
 
     @Override

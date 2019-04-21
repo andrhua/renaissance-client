@@ -24,23 +24,22 @@ public class Assets {
         manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         manager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
+        manager.load("gfx/icons.atlas", TextureAtlas.class);
+        manager.load("i18n/strings", I18NBundle.class);
 
         IRun createFTF = (String file, int size, String assetsName)->{
             FreetypeFontLoader.FreeTypeFontLoaderParameter ftfp = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-            ftfp.fontParameters.characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*";
+            ftfp.fontParameters.characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!'.,:/";
             ftfp.fontFileName = file;
             ftfp.fontParameters.size = size;
             ftfp.fontParameters.minFilter = Texture.TextureFilter.Linear;
             ftfp.fontParameters.magFilter= Texture.TextureFilter.Linear;
             manager.load(assetsName, BitmapFont.class, ftfp);
         };
-        createFTF.run("fonts/classy.otf", Const.heightInt(.0625f), "regular.ttf");
-        createFTF.run("fonts/classy.otf", Const.heightInt(.091f), "menu.ttf");
+        createFTF.run("fonts/classy.otf", Const.heightInt(.0625f), "main.ttf");
+        createFTF.run("fonts/classy.otf", Const.heightInt(.091f), "button.ttf");
         createFTF.run("fonts/classy.otf", Const.heightInt(.048f), "task.ttf");
-        createFTF.run("fonts/clother.ttf", Const.heightInt(.033f), "timer.ttf");
-        createFTF.run("fonts/clother.ttf", Const.heightInt(.025f), "caption.ttf");
-
-        manager.load("gfx/icons.atlas", TextureAtlas.class);
-        manager.load("i18n/strings", I18NBundle.class);
+        createFTF.run("fonts/firacode.otf", Const.heightInt(.031f), "timer.ttf");
+        createFTF.run("fonts/firacode.otf", Const.heightInt(.018f), "caption.ttf");
     }
 }
