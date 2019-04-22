@@ -3,7 +3,7 @@ package perdonin.renaissance.game;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import perdonin.renaissance.core.Const;
-import perdonin.renaissance.inferrence.PredictionResponse;
+import perdonin.renaissance.inference.PredictionResponse;
 import perdonin.renaissance.screen.GameScreen;
 
 import java.util.Iterator;

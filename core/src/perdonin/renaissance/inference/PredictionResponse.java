@@ -1,4 +1,4 @@
-package perdonin.renaissance.inferrence;
+package perdonin.renaissance.inference;
 
 import com.badlogic.gdx.utils.Array;
 import perdonin.renaissance.core.Utils;

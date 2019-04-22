@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.google.api.client.http.HttpResponse;
 import perdonin.renaissance.core.Assets;
 import perdonin.renaissance.core.Const;
-import perdonin.renaissance.inferrence.GoogleCloudPredictionBackend;
+import perdonin.renaissance.inference.GoogleCloudPredictionBackend;
 import perdonin.renaissance.ui.Colors;
 
 import java.io.IOException;

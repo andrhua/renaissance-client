@@ -1,4 +1,4 @@
-package perdonin.renaissance.inferrence;
+package perdonin.renaissance.inference;
 
 public interface PredictionBackend<T> {
 

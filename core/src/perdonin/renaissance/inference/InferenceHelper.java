@@ -1,4 +1,4 @@
-package perdonin.renaissance.inferrence;
+package perdonin.renaissance.inference;
 
 import com.badlogic.gdx.utils.Json;
 import com.google.api.client.http.HttpResponse;

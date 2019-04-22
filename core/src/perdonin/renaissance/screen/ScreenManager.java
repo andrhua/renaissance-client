@@ -12,7 +12,7 @@ import perdonin.renaissance.MyGame;
 import perdonin.renaissance.core.Const;
 import perdonin.renaissance.core.I18n;
 import perdonin.renaissance.i.IUpdate;
-import perdonin.renaissance.inferrence.GoogleCloudPredictionBackend;
+import perdonin.renaissance.inference.GoogleCloudPredictionBackend;
 import perdonin.renaissance.ui.UIBuilder;
 
 import java.util.HashMap;

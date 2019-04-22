@@ -1,4 +1,4 @@
-package perdonin.renaissance.inferrence;
+package perdonin.renaissance.inference;
 
 import com.badlogic.gdx.Gdx;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -75,7 +75,7 @@ public class GoogleCloudPredictionBackend implements PredictionBackend<Future<Ht
             HttpRequest request = requestFactory
                     .buildRequest(method.getHttpMethod(), url, content)
                     .setConnectTimeout(10 * 1000)
-                    .setReadTimeout(45 * 1000);
+                    .setReadTimeout(60 * 1000);
             return request.executeAsync();
         } catch (IOException e) {
             System.out.println("Cannot build request");

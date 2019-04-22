@@ -16,8 +16,8 @@ import com.badlogic.gdx.utils.Array;
 import perdonin.renaissance.core.Const;
 import perdonin.renaissance.game.DrawingListener;
 import perdonin.renaissance.game.GameSession;
-import perdonin.renaissance.inferrence.GoogleCloudPredictionBackend;
-import perdonin.renaissance.inferrence.InferenceHelper;
+import perdonin.renaissance.inference.GoogleCloudPredictionBackend;
+import perdonin.renaissance.inference.InferenceHelper;
 import perdonin.renaissance.ui.Canvas;
 import perdonin.renaissance.ui.Colors;
 

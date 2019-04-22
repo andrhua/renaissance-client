@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import perdonin.renaissance.core.Const;
 import perdonin.renaissance.i.IReset;
-import perdonin.renaissance.inferrence.InferenceHelper;
+import perdonin.renaissance.inference.InferenceHelper;
 import perdonin.renaissance.ui.Canvas;
 
 public class DrawingListener extends InputListener implements IReset {
