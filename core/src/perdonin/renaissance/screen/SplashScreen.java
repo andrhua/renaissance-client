@@ -5,8 +5,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -21,12 +23,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class SplashScreen extends BaseScreen {
-    private BitmapFont classy;
     private AssetManager am;
     private GoogleCloudPredictionBackend gcpb;
     private Future<HttpResponse> instanceWakingRequest;
-    private boolean connectionEstabilished = false;
+    private boolean connectionEstablished = false;
     private boolean assetsLoaded = false;
+    // TODO: make fake bitmap font, create skin, substitute font with runtime generated, implement dialogs
+    private Dialog noConnectionDialog;
+    private Dialog noServerResponse;
 
     SplashScreen(ScreenManager sm) {
         super(sm);
@@ -39,30 +43,60 @@ public class SplashScreen extends BaseScreen {
         }
     }
 
-    private void initAssets(){
+    private BitmapFont getAppNameFont(FreeTypeFontGenerator.FreeTypeFontParameter parameter){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/classy.otf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.minFilter= Texture.TextureFilter.Linear;
-        parameter.magFilter= Texture.TextureFilter.Linear;
         parameter.characters = "rensaic";
         parameter.size = Const.heightInt(0.067f);
-        classy = generator.generateFont(parameter);
-        classy.setUseIntegerPositions(false);
+        BitmapFont font = generator.generateFont(parameter);
+        generator.dispose();
+        return font;
     }
+
+    /*private BitmapFont getDialogFont(FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/firacode.otf"));
+        parameter.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.";
+        parameter.size = Const.heightInt(0.03f);
+        BitmapFont font = generator.generateFont(parameter);
+        generator.dispose();
+        return font;
+    }*/
 
     @Override
     protected void initUI() {
-        initAssets();
-        Label.LabelStyle style = new Label.LabelStyle(classy, Colors.LOGO);
+        /*Pixmap p = new Pixmap(2, 2, Pixmap.Format.RGB565);
+        p.setColor(Colors.LOGO);
+        p.fillRectangle(0, 0, 2, 2);
+        NinePatchDrawable dialogBackground = new NinePatchDrawable(new NinePatch(new Texture(p)));
+        p.dispose();*/
+
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.minFilter= Texture.TextureFilter.Linear;
+        parameter.magFilter= Texture.TextureFilter.Linear;
+
+        /*Window.WindowStyle dialogStyle = new Window.WindowStyle(getDialogFont(parameter), Color.WHITE, dialogBackground);
+        noConnectionDialog = new Dialog("Check your internet connection and try again", dialogStyle);
+        noConnectionDialog.button("OK");
+        noServerResponse = new Dialog("Prediction server does not response", dialogStyle);
+        noServerResponse.button("Reconnect", new Object());*/
+
         Table table = new Table();
         table.defaults().align(Align.center);
         table.setFillParent(true);
-        table.add(new Label("renaissance", style)).center();
-        sm.stage.addActor(table);
-        sm.stage.addAction(Actions.sequence(
+        table.add(new Label("renaissance", new Label.LabelStyle(getAppNameFont(parameter), Colors.LOGO))).center();
+        table.setOrigin(Const.width(.5f), Const.height(.5f));
+        table.setTransform(true);
+        table.addAction(Actions.sequence(
                 Actions.alpha(0),
-                Actions.fadeIn(.5f)
+                Actions.fadeIn(.5f),
+                Actions.forever(
+                        Actions.sequence(
+                                Actions.delay(1.5f),
+                                Actions.scaleTo(0.9f,0.9f, 0.25f, Interpolation.circleIn),
+                                Actions.scaleTo(1, 1, 0.15f, Interpolation.circleOut)
+                        )
+                )
         ));
+        sm.stage.addActor(table);
         am = new Assets().manager;
         sm.game.assets = am;
     }
@@ -74,13 +108,13 @@ public class SplashScreen extends BaseScreen {
 
     @Override
     public void update(float delta) {
-        if (connectionEstabilished && assetsLoaded) {
+        if (connectionEstablished && assetsLoaded) {
             sm.setScreen(ScreenManager.ScreenType.MENU);
         }
-        if (!connectionEstabilished && instanceWakingRequest.isDone()) {
+        if (!connectionEstablished && instanceWakingRequest.isDone()) {
             try {
                 if (instanceWakingRequest.get().isSuccessStatusCode()) {
-                    connectionEstabilished = true;
+                    connectionEstablished = true;
                     Gdx.app.log("instance", "is online");
                 }
             } catch (InterruptedException e) {
@@ -99,9 +133,5 @@ public class SplashScreen extends BaseScreen {
             sm.execAssetsDependentOps(gcpb);
             assetsLoaded = true;
         }
-    }
-
-    private Future<HttpResponse> createInstanceWakingRequest() {
-        return gcpb.requestOnlinePrediction(new float[1]);
     }
 }
