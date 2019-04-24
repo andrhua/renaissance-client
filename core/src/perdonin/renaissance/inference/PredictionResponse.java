@@ -1,15 +1,17 @@
 package perdonin.renaissance.inference;
 
 import com.badlogic.gdx.utils.Array;
-import perdonin.renaissance.core.Utils;
 
+import java.util.AbstractMap;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class PredictionResponse {
     private Array<Entry<Integer, Float>> sortedScores;
 
     public PredictionResponse(float[] scores) {
-        this.sortedScores = Utils.sort(scores);
+        this.sortedScores = PredictionResponse.sort(scores);
     }
 
     public Entry<Integer, Float> getTop(int k) {
@@ -40,5 +42,14 @@ public class PredictionResponse {
      */
     public static class Scores {
         float[] out;
+    }
+
+    private static Array<Map.Entry<Integer, Float>> sort(float[] arr){
+        Array<Map.Entry<Integer, Float>> list = new Array<>();
+        for (int i = 0; i < arr.length; i++){
+            list.add(new AbstractMap.SimpleEntry<>(i, arr[i]));
+        }
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        return list;
     }
 }

@@ -1,11 +1,7 @@
 package perdonin.renaissance.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -15,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import perdonin.renaissance.core.Const;
 import perdonin.renaissance.i.IReset;
 
@@ -29,16 +24,16 @@ public class Canvas extends Widget implements IReset {
     private Vector2 topRight, bottomLeft;
     private Pixmap raw;
 
-    public void initGL(){
+    public void initGraphicalOps(){
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.BLACK);
         buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Const.WIDTH, Const.HEIGHT, false);
-        this.reset();
+        reset();
         textureRegion = new TextureRegion(buffer.getColorBufferTexture(), 0, 0, Const.CANVAS_SIZE, Const.CANVAS_SIZE);
         textureRegion.flip(false, true);
     }
 
-    public void addInk(Vector2 v){
+    public void addStroke(Vector2 v){
         points.add(v);
         if (v.x > topRight.x) topRight.x = v.x;
         if (v.y > topRight.y) topRight.y = v.y;

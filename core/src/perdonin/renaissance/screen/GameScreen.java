@@ -163,8 +163,9 @@ public class GameScreen extends BaseScreen{
 
     @Override
     protected void onShow(Stage stage) {
+        stage.setDebugAll(true);
         taskTable.setBackground(uiBuilder.getBackground(Colors.LOGO));
-        canvas.initGL();
+        canvas.initGraphicalOps();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(drawTable);
         stage.addActor(taskTable);

@@ -7,7 +7,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.discovery.Discovery;
 import com.google.api.services.discovery.model.JsonSchema;
 import com.google.api.services.discovery.model.RestDescription;
@@ -29,13 +28,6 @@ public class GoogleCloudPredictionBackend implements PredictionBackend<Future<Ht
     private final HttpRequestFactory requestFactory = httpTransport.createRequestFactory(credential);
     private final RestMethod method;
     private final GenericUrl url;
-    private final ExponentialBackOff backoff = new ExponentialBackOff.Builder()
-            .setInitialIntervalMillis(5*1000)
-            .setMaxElapsedTimeMillis(30*1000)
-            .setMaxIntervalMillis(6*1000)
-            .setMultiplier(1.5)
-            .setRandomizationFactor(0.25)
-            .build();
 
     public GoogleCloudPredictionBackend() throws IOException {
         Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null)

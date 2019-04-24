@@ -140,6 +140,7 @@ public class SplashScreen extends BaseScreen {
                     updateLoadingFeedback("Prediction server does not respond. Try again later.");
                     Gdx.app.log("instance", "is offline");
                 }
+                Gdx.app.exit();
             }
         }
         if (!assetsLoaded && am.update()) {

@@ -23,7 +23,7 @@ public class DrawingListener extends InputListener implements IReset {
     }
 
     private void ink(float x, float y, boolean endOfStroke){
-        canvas.addInk(new Vector2(x, y));
+        canvas.addStroke(new Vector2(x, y));
         if (prevPoint != null && (endOfStroke || (x != prevPoint.x && y != prevPoint.y ))) {
             strokes.add(new float[]{
                     (x - prevPoint.x) * Const.ACTUAL2SAMPLE,
