@@ -102,7 +102,7 @@ public class GameScreen extends BaseScreen{
         predictionLabel.setColor(1, 1, 1, .6f);
 
         Table buttons = new Table();
-        buttons.defaults().expandX().size(Const.CANVAS_SIZE * .15f).pad(0, Const.widthInt(0.05f), 0, Const.widthInt(0.05f));
+        buttons.defaults().expandX().size(Const.CANVAS_SIZE * .15f).pad(0, Const.canvasInt(0.05f), 0, Const.canvasInt(0.05f));
         buttons.add(eraser, skip, exit);
 
         drawTable = new Table();
@@ -114,9 +114,9 @@ public class GameScreen extends BaseScreen{
         drawTable.defaults().reset();
         drawTable.defaults().colspan(2);
         drawTable.add(objectiveDrawLabel).width(Const.WIDTH).center().row();
-        drawTable.add(canvas).padTop(Const.height(.05f)).row();
-        drawTable.add(buttons).center().padTop(Const.height(.05f)).row();
-        drawTable.add(predictionLabel).padTop(Const.height(0.035f)).center();
+        drawTable.add(canvas).padTop(Const.canvas(.05f)).row();
+        drawTable.add(buttons).center().padTop(Const.canvas(.05f)).row();
+        drawTable.add(predictionLabel).padTop(Const.canvas(0.1f)).center();
     }
 
     private void clearCanvas() {
@@ -163,7 +163,7 @@ public class GameScreen extends BaseScreen{
 
     @Override
     protected void onShow(Stage stage) {
-        stage.setDebugAll(true);
+        // stage.setDebugAll(true);
         taskTable.setBackground(uiBuilder.getBackground(Colors.LOGO));
         canvas.initGraphicalOps();
         Gdx.input.setInputProcessor(stage);
