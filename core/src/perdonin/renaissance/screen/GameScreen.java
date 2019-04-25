@@ -210,7 +210,7 @@ public class GameScreen extends BaseScreen{
                 ));
                 break;
             case END:
-                summaryLabel.setText(i18n.format("summary", gameSession.getRecognized()));
+                summaryLabel.setText(i18n.format("summary", gameSession.getRecognizedCount()));
                 endTable.setVisible(true);
                 endTable.addAction(Actions.sequence(
                         Actions.alpha(0),
@@ -251,17 +251,6 @@ public class GameScreen extends BaseScreen{
     }
 
     public void onRoundStart(int objective, int round) {
-        // save drawing for ending screen
-        if (0 <= round && round < 6) {
-            TextButton tb = drawings.get(round);
-            TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(resultStyle);
-            style.up = canvas.getRawDrawable();
-            style.fontColor = gameSession.getGuess(round) ? Colors.RECOGNIZED : Colors.UNRECOGNIZED;
-            tb.setStyle(style);
-            tb.setText(Const.categories.get(objective));
-            tb.getLabelCell().padTop(Const.height(.12f));
-        }
-
         if (objective >= 0) {
             setState(State.TASK);
             objectiveTaskLabel.setText(Const.categories.get(objective));
@@ -277,6 +266,16 @@ public class GameScreen extends BaseScreen{
         else {
             setState(State.END);
         }
+    }
+
+    public void onRoundFinish(int objective, int round, boolean isSuccessful) {
+        TextButton tb = drawings.get(round);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(resultStyle);
+        style.up = canvas.getRawDrawable();
+        style.fontColor = isSuccessful ? Colors.RECOGNIZED : Colors.UNRECOGNIZED;
+        tb.setStyle(style);
+        tb.setText(Const.categories.get(objective));
+        tb.getLabelCell().padTop(Const.height(.12f));
     }
 
 }

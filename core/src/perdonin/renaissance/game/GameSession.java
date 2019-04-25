@@ -10,14 +10,15 @@ import java.util.Iterator;
 
 public class GameSession {
     private final GameScreen gameScreen;
-    private Array<Integer> categories = new Array<>(Const.categories.size);
+    private final Array<Integer> categories = new Array<>(Const.categories.size);
     private Iterator<Integer> sessionObjectives;
-    private int latestObjectiveIndex = 0;
-    private int round = 0;
-    private boolean[] predictions = new boolean[6];
     private Timer.Task timer;
+    private int latestObjectiveIndex = 0;
+    private int round;
     private int time;
     private int objective;
+    private int recognizedCount;
+    private boolean isSleep;
 
     public GameSession(GameScreen gameScreen){
         this.gameScreen = gameScreen;
@@ -36,8 +37,11 @@ public class GameSession {
         array.addAll(categories, latestObjectiveIndex, Const.ROUNDS);
         latestObjectiveIndex += Const.ROUNDS;
         sessionObjectives = array.iterator();
+        round = 0;
+        recognizedCount = 0;
+        isSleep = false;
         resetTimer();
-        startNextRound(false);
+        startNextRound();
     }
 
     public void startTimer() {
@@ -51,12 +55,15 @@ public class GameSession {
         } else {
             int position = response.getObjectivePosition(objective);
             if (position <= Const.POSITION_TO_WIN) {
+                isSleep = true;
                 resetTimer();
                 gameScreen.updateDrawingPrediction(Array.with(response.getTop(position)));
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        startNextRound(true);
+                        finishRound(true);
+                        startNextRound();
+                        isSleep = false;
                     }
                 }, 1.75f);
                 return true;
@@ -67,12 +74,16 @@ public class GameSession {
         }
     }
 
-    private void startNextRound(boolean isSuccessful) {
-        if (round > 0) predictions[round - 1] = isSuccessful;
+    private void finishRound(boolean isSuccessful) {
+        if (isSuccessful) recognizedCount++;
+        gameScreen.onRoundFinish(objective, round++, isSuccessful);
+    }
+
+    private void startNextRound() {
         objective = sessionObjectives.hasNext()
                 ? sessionObjectives.next()
                 : -1;
-        gameScreen.onRoundStart(objective, round++);
+        gameScreen.onRoundStart(objective, round);
     }
 
     private void resetTimer() {
@@ -83,8 +94,9 @@ public class GameSession {
             public void run() {
                 time--;
                 gameScreen.updateTimer(time);
-                if (time == 0) {
-                    startNextRound(false);
+                if (!isSleep && time == 0) {
+                    finishRound(false);
+                    startNextRound();
                 }
             }
         };
@@ -92,18 +104,12 @@ public class GameSession {
 
     public void skipRound() {
         resetTimer();
-        startNextRound(false);
+        finishRound(false);
+        startNextRound();
     }
 
-    public int getRecognized() {
-        int recognized = 0;
-        for (boolean prediction: predictions)
-            if (prediction) recognized += 1;
-        return recognized;
-    }
-
-    public boolean getGuess(int i){
-        return this.predictions[i];
+    public int getRecognizedCount() {
+        return recognizedCount;
     }
 
     public int getObjective() {
