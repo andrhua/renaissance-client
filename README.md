@@ -18,7 +18,7 @@ Make sure your device is running Android 4.4+ and has OpenGL 3.0+ support.
 Download [.apk](../master/android-debug.apk).
 
 ## Built with
-- A custom drawing recognition [model](https://github.com/andrhua/renaissance-keras) written in Tensorflow and deployed to Google Cloud AI Platform.
+- A custom drawing recognition [model](https://github.com/andrhua/renaissance-keras) written in Tensorflow and deployed to Google Cloud AI Platform for requesting online predictions.
 
 - Client app developed with the help of LibGDX framework, and technically is able to run anywhere with JRE 1.8 installed.
 
@@ -26,4 +26,4 @@ Download [.apk](../master/android-debug.apk).
 hey, that's me
 
 ## Acknowledgment
-Sanyochek && forex broker
+Sanyochek feat. forex broker
