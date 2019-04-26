@@ -29,7 +29,7 @@ public class Assets {
 
         IRun createFTF = (String file, int size, String assetsName)->{
             FreetypeFontLoader.FreeTypeFontLoaderParameter ftfp = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-            ftfp.fontParameters.characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!'.,:/";
+            ftfp.fontParameters.characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!'.,:/-";
             ftfp.fontFileName = file;
             ftfp.fontParameters.size = size;
             ftfp.fontParameters.minFilter = Texture.TextureFilter.Linear;
@@ -40,6 +40,6 @@ public class Assets {
         createFTF.run("fonts/classy.otf", Const.heightInt(.091f), "button.ttf");
         createFTF.run("fonts/classy.otf", Const.heightInt(.048f), "task.ttf");
         createFTF.run("fonts/firacode.otf", Const.heightInt(.031f), "timer.ttf");
-        createFTF.run("fonts/firacode.otf", Const.heightInt(.018f), "caption.ttf");
+        createFTF.run("fonts/firacode.otf", Const.heightInt(.016f), "caption.ttf");
     }
 }

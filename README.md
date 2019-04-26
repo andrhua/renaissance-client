@@ -2,7 +2,7 @@
 
 Replica of Google's [Quick, Draw!](https://quickdraw.withgoogle.com) as an autonomous Android app.
 
-// insert demo
+![img](https://s3.gifyu.com/images/output6c767cc65b52046a.md.gif)
 
 ## Trying out
 **Important**: project is licensed with Google Cloud Platform Free Tier, meaning it won't be working past mid-December 2019, but you can relatively easy deploy your own prediction server as described [here](https://github.com/andrhua/renaissance-keras).

@@ -49,29 +49,32 @@ public class GameSession {
     }
 
     public boolean isSuccessfulRecognition(PredictionResponse response) {
-        if (response.getTop(0).getValue() < Const.RECOGNIZABLE){
-            gameScreen.updateDrawingPrediction(null);
-            return false;
-        } else {
-            int position = response.getObjectivePosition(objective);
-            if (position <= Const.POSITION_TO_WIN) {
-                isSleep = true;
-                resetTimer();
-                gameScreen.updateDrawingPrediction(Array.with(response.getTop(position)));
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        finishRound(true);
-                        startNextRound();
-                        isSleep = false;
-                    }
-                }, 1.75f);
-                return true;
-            } else {
-                gameScreen.updateDrawingPrediction(response.getSortedScores());
+        if (!isSleep) {
+            if (response.getTop(0).getValue() < Const.RECOGNIZABLE) {
+                gameScreen.updateDrawingPrediction(null);
                 return false;
+            } else {
+                int position = response.getObjectivePosition(objective);
+                if (position <= Const.POSITION_TO_WIN) {
+                    isSleep = true;
+                    resetTimer();
+                    gameScreen.updateDrawingPrediction(Array.with(response.getTop(position)));
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            finishRound(true);
+                            startNextRound();
+                            isSleep = false;
+                        }
+                    }, 1.75f);
+                    return true;
+                } else {
+                    gameScreen.updateDrawingPrediction(response.getSortedScores());
+                    return false;
+                }
             }
         }
+        return false;
     }
 
     private void finishRound(boolean isSuccessful) {
